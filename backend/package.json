@@ -1,0 +1,17 @@
+{
+  "name": "bankproject",
+  "scripts": {
+    "start": "nodemon app.js",
+    "start-server": "node app.js"
+  },
+  "author": "Feyzi Eren Gündoğdu",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "mongoose": "^7.4.1",
+    "nodemon": "^3.0.1",
+    "pdfkit": "^0.13.0"
+  }
+}
