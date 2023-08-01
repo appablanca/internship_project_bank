@@ -1,16 +1,111 @@
 const express = require('express');
 const app = express();
-const ejs = require('ejs');
-const fs = require('fs');
+const path = require("path");
 const port = 3000;
+const bodyParser = require('body-parser');
 
-app.get('/', async function (req, res) {
-    const testing = await fetch('http://localhost:8080/').then(res => {
-        return res.json();
-    }).then(resData => {
-        res.render('../views/shop/index.ejs', { name: resData });
-    });
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({ extended: false }));
 
+app.get('/login', async function (req, res) {
+    const testing = await fetch('http://localhost:8080/login')
+        .then(res => {
+            return res.json();
+        })
+        .then(resData => {
+            res.render("../views/auth/login.ejs", {
+                path: "/login",
+                pageTitle: "login",
+                oldInput: {
+                    email: "",
+                    password: ""
+                },
+                validationErrors: []
+            });
+        });
+
+});
+
+app.post("/login", async function (req, res) {
+    const loginData = {
+        email: req.body.email,
+        password: req.body.password
+    }
+    const login = await fetch(
+        "http://localhost:8080/login",
+        {
+            method: "POST",
+            mode: "cors",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(loginData)
+        })
+        .then(res => {
+            return res.json()
+        }).then(resData => {
+            res.redirect("/main")
+        });
+})
+
+app.get("/signup", async function (req, res) {
+    const signup = await fetch("http://localhost:8080/signup")
+        .then(res => {
+            return res.json();
+        })
+        .then(resData => {
+            res.render("../views/auth/signup.ejs", {
+                path: "/signup",
+                pageTitle: "Signup",
+                oldInput: {
+                    email: "",
+                    name: "",
+                    password: "",
+                    confirmPassword: ""
+                },
+                validationErrors: []
+            });
+        });
+});
+
+app.post("/signup", async function (req, res) {
+    const data = {
+        email: req.body.email,
+        name: req.body.name,
+        password: req.body.password,
+        confirmPassword: req.body.confirmPassword
+    }
+    const singup = await fetch(
+        "http://localhost:8080/signup",
+        {
+            method: 'POST',
+            mode: "cors",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data)
+        })
+        .then(res => {
+            return res.json()
+        }).then(resData => {
+            res.redirect("/login")
+        });
+})
+
+
+
+app.get("/main", async function (req, res) {
+    const main = await fetch("http://localhost:8080/main")
+        .then(res => {
+            return res.json();
+        })
+        .then(resData => {
+            res.render("../views/bank/main.ejs", {
+                email: resData.email
+            });
+        });
 });
 
 app.listen(port, function (error) {

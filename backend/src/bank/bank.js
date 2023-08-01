@@ -1,4 +1,4 @@
-exports.getIndex = (req, res, next) => {
-
-    res.json('hello');
+exports.getMain = (req, res, next) => {
+    res.json({email:"fetzi"});
 };
+

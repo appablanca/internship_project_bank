@@ -4,12 +4,7 @@
 </head>
 
 <body>
-   <%- include('../includes/navigation.ejs') %>
-
     <main>
-        <% if (errorMessage) { %>
-            <div class="user-message user-message--error"><%= errorMessage %></div>
-        <% } %>
         <form class="login-form" action="/signup" method="POST" novalidate>
             <div class="form-control">
                 <label for="email">E-Mail</label>
@@ -20,6 +15,15 @@
                     id="email" 
                     value="<%= oldInput.email %>">
             </div>
+            <div class="form-control">
+                <label for="name">Name</label>
+                <input 
+                    class="<%= validationErrors.find(e => e.param === 'name') ? 'invalid' : '' %>"
+                    type="name" 
+                    name="name" 
+                    id="name" 
+                    value="<%= oldInput.name %>">
+            </div> 
             <div class="form-control">
                 <label for="password">Password</label>
                 <input 
@@ -38,7 +42,6 @@
                     id="confirmPassword" 
                     value="<%= oldInput.confirmPassword %>">
             </div>
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <button class="btn" type="submit">Signup</button>
         </form>
     </main>

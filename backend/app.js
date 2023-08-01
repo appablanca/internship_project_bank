@@ -5,13 +5,14 @@ const bodyParser = require("body-parser");
 const path = require("path")
 const app = express(); 
 const bankRoutes = require("./src/routes/bank.js");
-
+const authRoutes = require("./src/routes/auth.js")
 
 
 app.use(bodyParser.urlencoded({extended: false}));
-
+app.use(express.json());
 
 app.use(bankRoutes);
+app.use(authRoutes);
 
 mongoose
     .connect(MONGODB_URI)
