@@ -13,8 +13,8 @@ app.get('/login', async function (req, res) {
             return res.json();
         })
         .then(resData => {
-            res.render("../views/auth/login.ejs", {
-                path: "/login",
+            res.render("../views/auth/loginT.ejs", {
+                path: "/loginT",
                 pageTitle: "login",
                 oldInput: {
                     email: "",
@@ -45,7 +45,7 @@ app.post("/login", async function (req, res) {
         .then(res => {
             return res.json()
         }).then(resData => {
-            res.redirect("/main")
+            res.redirect(resData.domain)
         });
 })
 
@@ -55,7 +55,7 @@ app.get("/signup", async function (req, res) {
             return res.json();
         })
         .then(resData => {
-            res.render("../views/auth/signup.ejs", {
+            res.render("../views/auth/signupT.ejs", {
                 path: "/signup",
                 pageTitle: "Signup",
                 oldInput: {
@@ -90,9 +90,10 @@ app.post("/signup", async function (req, res) {
         .then(res => {
             return res.json()
         }).then(resData => {
-            res.redirect("/login")
+            res.redirect(resData.domain)
         });
 })
+
 
 
 
@@ -103,7 +104,8 @@ app.get("/main", async function (req, res) {
         })
         .then(resData => {
             res.render("../views/bank/main.ejs", {
-                email: resData.email
+                email: resData.email,
+                path: ""
             });
         });
 });

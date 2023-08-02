@@ -4,37 +4,33 @@
     <nav class="main-header__nav">
         <ul class="main-header__item-list">
             <li class="main-header__item">
-                <a>Shop</a>
+                <a class="<%= path === '/' ? 'active' : '' %>" href="/">main page</a>
             </li>
             <li class="main-header__item">
-                <a>Products</a>
+                <a class="<%= path === '/products' ? 'active' : '' %>" href="/products">deposit</a>
             </li>
                 <li class="main-header__item">
-                    <a>Cart</a>
+                    <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">withdraw</a>
                 </li>
                 <li class="main-header__item">
-                    <a>Orders</a>
+                    <a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders">transfer</a>
                 </li>
-                <li class="main-header__item">
-                    <a>Add Product</a>
-                </li>
-                <li class="main-header__item">
-                    <a>Admin Products</a>
-                </li>
+
         </ul>
         <ul class="main-header__item-list">
                 <li class="main-header__item">
-                    <a>Login</a>
+                    <a class="<%= path === '/login' ? 'active' : '' %>" href="/login">login</a>
                 </li>
                 <li class="main-header__item">
-                    <a>Signup</a>
+                    <a class="<%= path === '/signup' ? 'active' : '' %>" href="/signup">signup</a>
                 </li>
+
                 <li class="main-header__item">
                     <form action="/logout" method="post">
-                        <button type="submit">Logout</button>
+                        <button type="submit">logout</button>
                     </form>
                 </li>
+
         </ul>
     </nav>
 </header>
-

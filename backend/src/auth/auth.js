@@ -1,26 +1,64 @@
 const User = require("../model/user");
+const bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator")
 
-exports.getLogin = (req,res,next) => {
+exports.getLogin = (req, res, next) => {
     res.json("login");
 }
-exports.postLogin = (req,res,next) => {
-    const loginData = {
-        success: true,
-        statusCode: 200,
-        message: 'User (name:' + req.body.email + ') insert has been completed successfully'
-    }
-    res.json(loginData);
-}
+exports.postLogin = (req, res, next) => {
+    const emailL = req.body.email;
+    const passwordL = req.body.password;
+    User.findOne({ email: emailL })
+        .then(user => {
+            if (user) {
+                bcrypt
+                    .compare(passwordL, user.password)
+                    .then(doMatch => {
+                        if (doMatch) {
+                            console.log("login success");
+                            res.json({ domain: "/main" });
+                        } else {
+                            res.json({ domain: "/login" });
+                        };
+                    });
+            } else {
+                res.json({ domain: "/login" });
+            }
+
+        });
+};
+
+
 exports.getSignup = (req, res, next) => {
     res.json("signup");
 };
 
 exports.postSignup = (req, res, next) => {
-    const data = {
-        success: true,
-        statusCode: 200,
-        message: 'User (name:' + req.body.name + ') insert has been completed successfully'
-    }
-    res.json(data);
-}
+    const emailS = req.body.email;
+    const nameS = req.body.name;
+    const passwordS = req.body.password;
+    User.findOne({ email: emailS })
+        .then(user => {
+            if (user) {
+                res.json({ domain: "/signup" });
+            } else {
+                bcrypt
+                    .hash(passwordS, 12)
+                    .then(hashedPassword => {
+                        const user = new User({
+                            email: emailS,
+                            name: nameS,
+                            IBAN: (Math.floor(100000 + Math.random() * 900000)),
+                            balance: 0,
+                            password: hashedPassword
+                        });
+                        return user.save();
+                    })
+                    .then(result => {
+                        res.json({ domain: "/login" });
+                    })
+            }
+        })
+};
+
+
