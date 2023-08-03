@@ -6,6 +6,7 @@ exports.getLogin = (req, res, next) => {
     res.json("login");
 }
 exports.postLogin = (req, res, next) => {
+    const session = req.session.isLoggedIn = true;
     const emailL = req.body.email;
     const passwordL = req.body.password;
     User.findOne({ email: emailL })
@@ -16,7 +17,7 @@ exports.postLogin = (req, res, next) => {
                     .then(doMatch => {
                         if (doMatch) {
                             console.log("login success");
-                            res.json({ domain: "/main" });
+                            res.json({ domain: "/main" ,session: session});
                         } else {
                             res.json({ domain: "/login" });
                         };
@@ -60,5 +61,11 @@ exports.postSignup = (req, res, next) => {
             }
         })
 };
+
+exports.postLogout = (req,res,next) => {
+    req.session.destroy(() => {
+        res.json({domain: "/login"});
+    });
+}
 
 

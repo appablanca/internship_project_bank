@@ -7,6 +7,11 @@ const bodyParser = require('body-parser');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.get("/" , (req,res,next) => {
+    res.redirect("/login");
+})
+
+
 app.get('/login', async function (req, res) {
     const testing = await fetch('http://localhost:8080/login')
         .then(res => {
@@ -94,6 +99,26 @@ app.post("/signup", async function (req, res) {
         });
 })
 
+app.post("/logout", async function (req, res) {
+    const data = {
+        session: req.body.session
+    }
+    const logout = await fetch("http://localhost:8080/logout", {
+        method: 'POST',
+        mode: "cors",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+    })
+        .then(res => {
+            return res.json()
+        }).then(resData => {
+            res.redirect(resData.domain)
+        });
+});
+
 
 
 
@@ -105,10 +130,109 @@ app.get("/main", async function (req, res) {
         .then(resData => {
             res.render("../views/bank/main.ejs", {
                 email: resData.email,
+                name: resData.name,
                 path: ""
             });
         });
 });
+app.get("/deposit", async function (req, res) {
+    const main = await fetch("http://localhost:8080/deposit")
+        .then(res => {
+            return res.json();
+        })
+        .then(resData => {
+            res.render("../views/bank/deposit.ejs", {
+                path: ""
+            });
+        });
+});
+app.post("/deposit", async function (req, res) {
+    const depositData = {
+        amount: req.body.amount
+    }
+
+    const deposit = await fetch(
+        "http://localhost:8080/deposit",
+        {
+            method: "POST",
+            mode: "cors",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(depositData)
+        })
+        .then(res => {
+            return res.json()
+        }).then(resData => {
+            res.redirect(resData.domain)
+        });
+})
+app.get("/transfer", async function (req, res) {
+    const main = await fetch("http://localhost:8080/transfer")
+        .then(res => {
+            return res.json();
+        })
+        .then(resData => {
+            res.render("../views/bank/transfer.ejs", {
+                email: resData.email,
+                path: ""
+            });
+        });
+});
+app.post("/transfer", async function (req, res) {
+    const transferData = {
+        IBAN: req.body.IBAN,
+        amount: req.body.amount
+    }
+    const deposit = await fetch(
+        "http://localhost:8080/transfer",
+        {
+            method: "POST",
+            mode: "cors",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(transferData)
+        })
+        .then(res => {
+            return res.json()
+        }).then(resData => {
+            res.redirect(resData.domain)
+        });
+})
+app.get("/details", async function (req, res) {
+    const main = await fetch("http://localhost:8080/details")
+        .then(res => {
+            return res.json();
+        })
+        .then(resData => {
+            res.render("../views/bank/details.ejs", {
+                email: resData.email,
+                path: ""
+            });
+        });
+});
+app.post("/details", async function (req, res) {
+    const deposit = await fetch(
+        "http://localhost:8080/details",
+        {
+            method: "POST",
+            mode: "cors",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(transferData)
+        })
+        .then(res => {
+            return res.json()
+        }).then(resData => {
+            res.redirect(resData.domain)
+        });
+})
+
 
 app.listen(port, function (error) {
     if (error)

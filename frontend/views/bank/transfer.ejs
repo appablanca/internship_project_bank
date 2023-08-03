@@ -1,0 +1,23 @@
+<%- include('../includes/head.ejs') %>
+    <title>transfer page</title>
+    <link rel="stylesheet" href="/css/deposit.css">
+
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+
+            <main>
+                    <form class="deposit-control" action="/transfer" method="POST">
+                        <div class="deposit-control">
+                            <label for="IBAN">IBAN</label>
+                            <input type="text" name="IBAN" id="IBAN">
+                        </div>
+                        <div class="deposit-control">
+                            <label for="amount">amount</label>
+                            <input type="number" name="amount" id="amount">
+                        </div>
+                        <button class="butto" type="submit">transfer</button>
+                    </form>
+            </main>
+            <%- include('../includes/end.ejs') %>

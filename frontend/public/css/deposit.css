@@ -1,0 +1,62 @@
+.deposit-control {
+    margin: 1rem 0;
+}
+.cent {
+    height: 100%;
+  width: 100%;
+
+
+  padding: 10px;
+}
+.deposit-control form{
+    height: 100%;
+    width: 100%;
+    
+}
+
+.deposit-control label{
+    display: block;
+    text-align: center;
+    line-height: 150%;
+    font-size: 2rem;
+    
+}
+.deposit-control input,
+.deposit-control textarea {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 10rem;
+    margin-bottom: 0.25rem;
+}
+.butto {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    padding: 0.25rem 1rem;
+    text-decoration: none;
+    font: inherit;
+    border: 1px solid #4B6587;
+    color: #4B6587;
+    background: white;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+.deposit-control input,
+.deposit-control textarea {
+    border: 1px solid #a1a1a1;
+    font: inherit;
+    border-radius: 2px;
+}
+
+.deposit-control input:focus,
+.deposit-control textarea:focus {
+    outline-color: #4B6587;
+}
+
+.deposit-control input.invalid,
+.deposit-control textarea.invalid {
+    border-color: red;
+}
