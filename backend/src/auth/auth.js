@@ -1,6 +1,7 @@
 const User = require("../model/user");
 const bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator")
+const jwt = require("jsonwebtoken");
 
 exports.getLogin = (req, res, next) => {
     res.json("login");
@@ -17,7 +18,15 @@ exports.postLogin = (req, res, next) => {
                     .then(doMatch => {
                         if (doMatch) {
                             console.log("login success");
-                            res.json({ domain: "/main" ,session: session});
+
+                            res.json({
+                                domain: "/main",
+                                email: user.email,
+                                name: user.name,
+                                IBAN: user.IBAN,
+                                balance: user.balance,
+                                transfers: user.transferLog.transfers
+                            });
                         } else {
                             res.json({ domain: "/login" });
                         };
@@ -51,7 +60,8 @@ exports.postSignup = (req, res, next) => {
                             name: nameS,
                             IBAN: (Math.floor(100000 + Math.random() * 900000)),
                             balance: 0,
-                            password: hashedPassword
+                            password: hashedPassword,
+                            transferLog: { transfers: [] }
                         });
                         return user.save();
                     })
@@ -62,10 +72,8 @@ exports.postSignup = (req, res, next) => {
         })
 };
 
-exports.postLogout = (req,res,next) => {
-    req.session.destroy(() => {
-        res.json({domain: "/login"});
-    });
+exports.postLogout = (req, res, next) => {
+    res.json({ domain: "/login" });
 }
 
 

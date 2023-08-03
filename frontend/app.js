@@ -3,11 +3,16 @@ const app = express();
 const path = require("path");
 const port = 3000;
 const bodyParser = require('body-parser');
+if (typeof localStorage === "undefined" || localStorage === null) {
+    var LocalStorage = require('node-localstorage').LocalStorage;
+    localStorage = new LocalStorage('./scratch');
+  }
+
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get("/" , (req,res,next) => {
+app.get("/", (req, res, next) => {
     res.redirect("/login");
 })
 
@@ -50,6 +55,10 @@ app.post("/login", async function (req, res) {
         .then(res => {
             return res.json()
         }).then(resData => {
+            localStorage.setItem("IBANT" ,resData.IBAN);
+            localStorage.setItem("NAMET",resData.name);
+            localStorage.setItem("BALANCET",resData.balance);
+            localStorage.setItem("TRANSFERST",resData.transfers);
             res.redirect(resData.domain)
         });
 })
@@ -101,8 +110,9 @@ app.post("/signup", async function (req, res) {
 
 app.post("/logout", async function (req, res) {
     const data = {
-        session: req.body.session
+        name: localStorage.getItem("NAMET")
     }
+
     const logout = await fetch("http://localhost:8080/logout", {
         method: 'POST',
         mode: "cors",
@@ -115,6 +125,7 @@ app.post("/logout", async function (req, res) {
         .then(res => {
             return res.json()
         }).then(resData => {
+
             res.redirect(resData.domain)
         });
 });
@@ -123,14 +134,19 @@ app.post("/logout", async function (req, res) {
 
 
 app.get("/main", async function (req, res) {
+    const transfers = localStorage.getItem("TRANSFERST");
+    const name = transfers.sNAME;
+    console.log(name);
     const main = await fetch("http://localhost:8080/main")
         .then(res => {
             return res.json();
         })
         .then(resData => {
             res.render("../views/bank/main.ejs", {
-                email: resData.email,
-                name: resData.name,
+                NAME: localStorage.getItem("NAMET"),
+                BALANCE: localStorage.getItem("BALANCET"),
+                IBAN: localStorage.getItem("IBANT"),
+                TRANSFER: name,
                 path: ""
             });
         });
@@ -142,15 +158,18 @@ app.get("/deposit", async function (req, res) {
         })
         .then(resData => {
             res.render("../views/bank/deposit.ejs", {
+                NAME: localStorage.getItem("NAMET"),
+                BALANCE: localStorage.getItem("BALANCET"),
+                IBAN: localStorage.getItem("IBANT"),
                 path: ""
             });
         });
 });
 app.post("/deposit", async function (req, res) {
     const depositData = {
-        amount: req.body.amount
+        amount: req.body.amount,
+        IBAN: localStorage.getItem("IBANT")
     }
-
     const deposit = await fetch(
         "http://localhost:8080/deposit",
         {
@@ -165,6 +184,7 @@ app.post("/deposit", async function (req, res) {
         .then(res => {
             return res.json()
         }).then(resData => {
+            localStorage.setItem("BALANCET",resData.newBalance);
             res.redirect(resData.domain)
         });
 })
@@ -175,14 +195,17 @@ app.get("/transfer", async function (req, res) {
         })
         .then(resData => {
             res.render("../views/bank/transfer.ejs", {
-                email: resData.email,
+                NAME: localStorage.getItem("NAMET"),
+                BALANCE: localStorage.getItem("BALANCET"),
+                IBAN: localStorage.getItem("IBANT"),
                 path: ""
             });
         });
 });
 app.post("/transfer", async function (req, res) {
     const transferData = {
-        IBAN: req.body.IBAN,
+        throwIBAN: localStorage.getItem("IBANT"),
+        receiveIBAN: req.body.IBAN,
         amount: req.body.amount
     }
     const deposit = await fetch(
@@ -199,39 +222,11 @@ app.post("/transfer", async function (req, res) {
         .then(res => {
             return res.json()
         }).then(resData => {
+            localStorage.setItem("BALANCET",resData.newBalance);
             res.redirect(resData.domain)
         });
 })
-app.get("/details", async function (req, res) {
-    const main = await fetch("http://localhost:8080/details")
-        .then(res => {
-            return res.json();
-        })
-        .then(resData => {
-            res.render("../views/bank/details.ejs", {
-                email: resData.email,
-                path: ""
-            });
-        });
-});
-app.post("/details", async function (req, res) {
-    const deposit = await fetch(
-        "http://localhost:8080/details",
-        {
-            method: "POST",
-            mode: "cors",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(transferData)
-        })
-        .then(res => {
-            return res.json()
-        }).then(resData => {
-            res.redirect(resData.domain)
-        });
-})
+
 
 
 app.listen(port, function (error) {

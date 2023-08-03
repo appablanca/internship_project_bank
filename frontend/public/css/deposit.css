@@ -42,7 +42,12 @@
     background: white;
     border-radius: 3px;
     cursor: pointer;
-  }
+}
+.butto:hover,
+.butto:active {
+  background-color: #4B6587;
+  color: white;
+}
 
 .deposit-control input,
 .deposit-control textarea {
