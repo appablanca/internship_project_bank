@@ -45,6 +45,10 @@ const userSchema = new Schema({
                 rNAME: {
                     type: String,
                     required: true
+                },
+                date: {
+                    type: String,
+                    required: true
                 }
             }
         ]

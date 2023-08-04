@@ -26,6 +26,7 @@
                                 <th>amount</th>
                                 <th>to</th>
                                 <th>IBAN</th>
+                                <th>date</th>
 
                                 <% for (var i=0; i < TRANSFERS.length;i++) { %>
                                     <tr>
@@ -43,6 +44,9 @@
                                         </td>
                                         <td>
                                             <%= TRANSFERS[i].rIBAN %>
+                                        </td>
+                                        <td>
+                                            <%= TRANSFERS[i].date %>
                                         </td>
                                     </tr>
                                     <% } %>

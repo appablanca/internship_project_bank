@@ -35,6 +35,14 @@ exports.postTransfer = (req, res, next) => {
     const throwIBAN = req.body.throwIBAN;
     const receiveIBAN = req.body.receiveIBAN;
     const amount = parseInt(req.body.amount);
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1; 
+    let dd = today.getDate();
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+    const formattedToday = dd + '/' + mm + '/' + yyyy;
+    console.log(formattedToday);
     User.findOne({ IBAN: throwIBAN })
         .then(user => {
             if (user) {
@@ -49,7 +57,8 @@ exports.postTransfer = (req, res, next) => {
                                     sNAME: user.name,
                                     amount: amount,
                                     rIBAN: receiveUser.IBAN,
-                                    rNAME: receiveUser.name
+                                    rNAME: receiveUser.name,
+                                    date: formattedToday
                                 }
                             )
                             user.transferLog.transfers.push(
@@ -58,7 +67,8 @@ exports.postTransfer = (req, res, next) => {
                                     sNAME: user.name,
                                     amount: amount,
                                     rIBAN: receiveUser.IBAN,
-                                    rNAME: receiveUser.name
+                                    rNAME: receiveUser.name,
+                                    date: formattedToday
                                 }
                             )
                             receiveUser.balance += amount;
