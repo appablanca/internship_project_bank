@@ -65,7 +65,7 @@ exports.postTransfer = (req, res, next) => {
                             user.balance -= amount;
                             user.save();
                             receiveUser.save();
-                            res.json({ domain: "/main", newBalance: user.balance });
+                            res.json({ domain: "/main", newBalance: user.balance,newTransferLog: user.transferLog.transfers });
                         })
                 }
             } else {

@@ -1,25 +1,54 @@
 <%- include('../includes/head.ejs') %>
     <title>main page</title>
-    <link rel="stylesheet" href="/css/stylesheet.css">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/forms.css">
-</head>
+    <link rel="stylesheet" href="/css/table.css">
+    </head>
 
-<body>
-    <%- include('../includes/navigation.ejs') %>
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+            <main>
+                <center>
+                    <div class="form-control">
+                        <h1>Name</h1>
+                        <%= NAME %>
+                    </div>
+                    <div class="form-control">
+                        <h1>Balance</h1>
+                        <%= BALANCE %>.00$
+                    </div>
+                    <div class="form-control">
+                        <h1>Tansfers</h1>
+                        <div class="table-from">
+                            <table>
+                                <th>from</th>
+                                <th>IBAN</th>
+                                <th>amount</th>
+                                <th>to</th>
+                                <th>IBAN</th>
 
-    <main>
-        <div class = "form">
-            <h1>Name</h1>
-            <%= NAME  %>
-        </div>
-        <div class = "form">
-            <h1>Balance</h1>
-            <%= BALANCE  %>
-        </div>
-        <div class = "form">
-            <h1>Tansfers</h1>
-            <%= TRANSFER  %>
-        </div>
-    </main>
-<%- include('../includes/end.ejs') %>
+                                <% for (var i=0; i < TRANSFERS.length;i++) { %>
+                                    <tr>
+                                        <td>
+                                            <%= TRANSFERS[i].sNAME %>
+                                        </td>
+                                        <td>
+                                            <%= TRANSFERS[i].sIBAN %>
+                                        </td>
+                                        <td>
+                                            <%= TRANSFERS[i].amount %>.00$
+                                        </td>
+                                        <td>
+                                            <%= TRANSFERS[i].rNAME %>
+                                        </td>
+                                        <td>
+                                            <%= TRANSFERS[i].rIBAN %>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                            </table>
+                        </div>
+                    </div>
+            </main>
+    </body>
+</html>

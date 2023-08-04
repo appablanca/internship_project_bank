@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 if (typeof localStorage === "undefined" || localStorage === null) {
     var LocalStorage = require('node-localstorage').LocalStorage;
     localStorage = new LocalStorage('./scratch');
-  }
+}
 
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -55,10 +55,11 @@ app.post("/login", async function (req, res) {
         .then(res => {
             return res.json()
         }).then(resData => {
+            const transfersL = JSON.stringify(resData.transfers);
             localStorage.setItem("IBANT" ,resData.IBAN);
             localStorage.setItem("NAMET",resData.name);
             localStorage.setItem("BALANCET",resData.balance);
-            localStorage.setItem("TRANSFERST",resData.transfers);
+            localStorage.setItem("TRANSFERST",transfersL);
             res.redirect(resData.domain)
         });
 })
@@ -125,7 +126,7 @@ app.post("/logout", async function (req, res) {
         .then(res => {
             return res.json()
         }).then(resData => {
-
+            localStorage.clear();
             res.redirect(resData.domain)
         });
 });
@@ -134,9 +135,8 @@ app.post("/logout", async function (req, res) {
 
 
 app.get("/main", async function (req, res) {
-    const transfers = localStorage.getItem("TRANSFERST");
-    const name = transfers.sNAME;
-    console.log(name);
+    const transferM = JSON.parse(localStorage.getItem("TRANSFERST"));
+
     const main = await fetch("http://localhost:8080/main")
         .then(res => {
             return res.json();
@@ -146,7 +146,7 @@ app.get("/main", async function (req, res) {
                 NAME: localStorage.getItem("NAMET"),
                 BALANCE: localStorage.getItem("BALANCET"),
                 IBAN: localStorage.getItem("IBANT"),
-                TRANSFER: name,
+                TRANSFERS: transferM,
                 path: ""
             });
         });
@@ -203,6 +203,7 @@ app.get("/transfer", async function (req, res) {
         });
 });
 app.post("/transfer", async function (req, res) {
+
     const transferData = {
         throwIBAN: localStorage.getItem("IBANT"),
         receiveIBAN: req.body.IBAN,
@@ -222,7 +223,9 @@ app.post("/transfer", async function (req, res) {
         .then(res => {
             return res.json()
         }).then(resData => {
+            const newTransfers = JSON.stringify(resData.newTransferLog);
             localStorage.setItem("BALANCET",resData.newBalance);
+            localStorage.setItem("TRANSFERST",newTransfers);
             res.redirect(resData.domain)
         });
 })
