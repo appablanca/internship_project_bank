@@ -21,6 +21,7 @@
                         <h1>Tansfers</h1>
                         <div class="table-from">
                             <table>
+                                <th>id</th>
                                 <th>from</th>
                                 <th>IBAN</th>
                                 <th>amount</th>
@@ -30,6 +31,9 @@
 
                                 <% for (var i=0; i < TRANSFERS.length;i++) { %>
                                     <tr>
+                                        <td>
+                                            <%= TRANSFERS[i]._id %>
+                                        </td>
                                         <td>
                                             <%= TRANSFERS[i].sNAME %>
                                         </td>
