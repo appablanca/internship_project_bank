@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const MONGODB_URI = "mongodb+srv://feyzieren:f8wjV80YPIP9vbIg@cluster0.jxeprcj.mongodb.net/bank?retryWrites=true&w=majority";
+const MONGODB_URI = "";
 const express = require("express");
 const session = require("express-session");
 const mongodbStore = require("connect-mongodb-session")(session);
