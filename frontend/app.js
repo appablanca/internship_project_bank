@@ -18,7 +18,7 @@ app.get("/", (req, res, next) => {
 
 
 app.get('/login', async function (req, res) {
-    const testing = await fetch('http://localhost:8080/login')
+    const testing = await fetch('http://localhost:8000/login')
         .then(res => {
             return res.json();
         })
@@ -42,7 +42,7 @@ app.post("/login", async function (req, res) {
         password: req.body.password
     }
     const login = await fetch(
-        "http://localhost:8080/login",
+        "http://localhost:8000/login",
         {
             method: "POST",
             mode: "cors",
@@ -65,7 +65,7 @@ app.post("/login", async function (req, res) {
 })
 
 app.get("/signup", async function (req, res) {
-    const signup = await fetch("http://localhost:8080/signup")
+    const signup = await fetch("http://localhost:8000/signup")
         .then(res => {
             return res.json();
         })
@@ -92,7 +92,7 @@ app.post("/signup", async function (req, res) {
         confirmPassword: req.body.confirmPassword
     }
     const singup = await fetch(
-        "http://localhost:8080/signup",
+        "http://localhost:8000/signup",
         {
             method: 'POST',
             mode: "cors",
@@ -114,7 +114,7 @@ app.post("/logout", async function (req, res) {
         name: localStorage.getItem("NAMET")
     }
 
-    const logout = await fetch("http://localhost:8080/logout", {
+    const logout = await fetch("http://localhost:8000/logout", {
         method: 'POST',
         mode: "cors",
         credentials: "same-origin",
@@ -137,7 +137,7 @@ app.post("/logout", async function (req, res) {
 app.get("/main", async function (req, res) {
     const transferM = JSON.parse(localStorage.getItem("TRANSFERST"));
 
-    const main = await fetch("http://localhost:8080/main")
+    const main = await fetch("http://localhost:8000/main")
         .then(res => {
             return res.json();
         })
@@ -152,7 +152,7 @@ app.get("/main", async function (req, res) {
         });
 });
 app.get("/deposit", async function (req, res) {
-    const main = await fetch("http://localhost:8080/deposit")
+    const main = await fetch("http://localhost:8000/deposit")
         .then(res => {
             return res.json();
         })
@@ -171,7 +171,7 @@ app.post("/deposit", async function (req, res) {
         IBAN: localStorage.getItem("IBANT")
     }
     const deposit = await fetch(
-        "http://localhost:8080/deposit",
+        "http://localhost:8000/deposit",
         {
             method: "POST",
             mode: "cors",
@@ -189,7 +189,7 @@ app.post("/deposit", async function (req, res) {
         });
 })
 app.get("/transfer", async function (req, res) {
-    const main = await fetch("http://localhost:8080/transfer")
+    const main = await fetch("http://localhost:8000/transfer")
         .then(res => {
             return res.json();
         })
@@ -210,7 +210,7 @@ app.post("/transfer", async function (req, res) {
         amount: req.body.amount
     }
     const deposit = await fetch(
-        "http://localhost:8080/transfer",
+        "http://localhost:8000/transfer",
         {
             method: "POST",
             mode: "cors",

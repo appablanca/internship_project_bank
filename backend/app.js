@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const MONGODB_URI = "";
+const MONGODB_URI = "mongodb+srv://feyzieren:pMaeWvk54Obd0hAR@cluster0.fbgwj.mongodb.net/";
 const express = require("express");
 const session = require("express-session");
 const mongodbStore = require("connect-mongodb-session")(session);
@@ -26,7 +26,7 @@ app.use(authRoutes);
 mongoose
     .connect(MONGODB_URI)
     .then(result => {
-        app.listen(8080);
+        app.listen(8000);
     })
 
 

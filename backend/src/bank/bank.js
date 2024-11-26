@@ -1,5 +1,6 @@
 const User = require("../model/user");
 const bcrypt = require("bcryptjs");
+
 exports.getMain = (req, res, next) => {
     res.json({ email: "fetzi" });
 };
